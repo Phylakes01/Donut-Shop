@@ -1,0 +1,563 @@
+import { useEffect, useRef, useState } from "react";
+import L from "leaflet";
+
+const asset = (file) => `${import.meta.env.BASE_URL}assets/photos/${file}`;
+
+const store = {
+  name: "BABI's Mini Donut",
+  place: "City of San Jose Del Monte, Bulacan",
+  coordinates: [14.8139, 121.0453],
+  facebook: "BABI's Mini Donut",
+};
+
+const navItems = [
+  ["home", "Home"],
+  ["menu", "Menu"],
+  ["gallery", "Gallery"],
+  ["about", "About"],
+  ["location", "Location"],
+];
+
+const gallery = [
+  {
+    file: "donuts-pink-gallery.jpg",
+    title: "Signature pink and chocolate tray",
+    alt: "Assorted mini donuts with pink, chocolate, white, and matcha glaze",
+  },
+  {
+    file: "matcha-white-box.jpg",
+    title: "Matcha and white chocolate",
+    alt: "Mini donuts with matcha glaze, white chocolate, and sprinkles",
+  },
+  {
+    file: "party-pink-chocolate.jpg",
+    title: "Party color set",
+    alt: "Pink and chocolate glazed mini donuts on a cooling rack",
+  },
+  {
+    file: "assorted-grid.jpg",
+    title: "Assorted box layout",
+    alt: "A full grid of assorted mini donuts",
+  },
+  {
+    file: "assorted-closeup.jpg",
+    title: "Made-to-order toppings",
+    alt: "Close up of mini donuts with marshmallows, sprinkles, graham, and almonds",
+  },
+  {
+    file: "matcha-graham-closeup.jpg",
+    title: "Matcha favorites",
+    alt: "Close up of matcha and white chocolate mini donuts",
+  },
+  {
+    file: "toppings-guide.jpg",
+    title: "Toppings guide",
+    alt: "BABI's Mini Donut toppings guide poster",
+    poster: true,
+  },
+  {
+    file: "menu-poster.jpg",
+    title: "Flavor and price menu",
+    alt: "BABI's Mini Donut flavor, topping, and price poster",
+    poster: true,
+  },
+];
+
+const flavors = ["Milk Chocolate", "Chocolate", "Matcha", "Strawberry", "White Chocolate"];
+
+const toppings = [
+  "White Sprinkles",
+  "Chocolate Sprinkles",
+  "Berry Sprinkles",
+  "Chocolate Drizzle",
+  "Crushed Graham",
+  "Crushed Cookies",
+  "Mallows",
+  "Sliced Almonds",
+  "Rice Crispies",
+];
+
+const priceCards = [
+  {
+    name: "6 pcs",
+    details: "2 flavors + toppings",
+    price: "PHP 75",
+  },
+  {
+    name: "1 Dozen",
+    details: "12 pcs, 3 flavors + toppings",
+    price: "PHP 140",
+  },
+  {
+    name: "Party Box",
+    details: "25 pcs, 4 flavors + toppings",
+    price: "PHP 280",
+  },
+];
+
+const businessFacts = [
+  ["Business Name", "BABI's Mini Donut"],
+  ["Location", "City of San Jose Del Monte, Bulacan"],
+  ["Business Idea", "Serve freshly made mini donuts"],
+  ["Goal", "Be known as a supplier of mini donuts for events and parties"],
+  ["Industry", "Food business"],
+  ["Target Customers", "Any age, mostly kids and families within the area"],
+  ["Competition", "Mister Donut and other ready-made donut sellers"],
+  ["Sales Approach", "Online orders and bazaar selling"],
+];
+
+function pageFromHash() {
+  const page = window.location.hash.replace("#", "");
+  return navItems.some(([id]) => id === page) ? page : "home";
+}
+
+function pageLabel(page) {
+  return navItems.find(([id]) => id === page)?.[1] || "Home";
+}
+
+export default function App() {
+  const [activePage, setActivePage] = useState(pageFromHash);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const onHashChange = () => setActivePage(pageFromHash());
+    window.addEventListener("hashchange", onHashChange);
+    return () => window.removeEventListener("hashchange", onHashChange);
+  }, []);
+
+  useEffect(() => {
+    setMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+    document.title = activePage === "home" ? "BABI's Mini Donut" : `${pageLabel(activePage)} | BABI's Mini Donut`;
+  }, [activePage]);
+
+  const goTo = (page) => {
+    if (window.location.hash === `#${page}`) {
+      setActivePage(page);
+      setMenuOpen(false);
+      return;
+    }
+    window.location.hash = page;
+  };
+
+  return (
+    <div className="site-shell">
+      <Header activePage={activePage} goTo={goTo} menuOpen={menuOpen} setMenuOpen={setMenuOpen} />
+      <main>
+        {activePage === "home" && <HomePage goTo={goTo} />}
+        {activePage === "menu" && <MenuPage />}
+        {activePage === "gallery" && <GalleryPage />}
+        {activePage === "about" && <AboutPage />}
+        {activePage === "location" && <LocationPage />}
+      </main>
+      <Footer goTo={goTo} />
+    </div>
+  );
+}
+
+function Header({ activePage, goTo, menuOpen, setMenuOpen }) {
+  return (
+    <header className="site-header">
+      <button className="brand-button" type="button" onClick={() => goTo("home")} aria-label="Go to home page">
+        <span className="brand-mark">B</span>
+        <span className="brand-copy">
+          <strong>BABI's</strong>
+          <small>Mini Donut</small>
+        </span>
+      </button>
+
+      <button
+        className="nav-toggle"
+        type="button"
+        onClick={() => setMenuOpen(!menuOpen)}
+        aria-label={menuOpen ? "Close navigation" : "Open navigation"}
+        aria-expanded={menuOpen}
+      >
+        <span />
+        <span />
+        <span />
+      </button>
+
+      <nav className={`primary-nav ${menuOpen ? "is-open" : ""}`} aria-label="Primary navigation">
+        {navItems.map(([id, label]) => (
+          <button key={id} className={activePage === id ? "active" : ""} type="button" onClick={() => goTo(id)}>
+            {label}
+          </button>
+        ))}
+      </nav>
+    </header>
+  );
+}
+
+function HomePage({ goTo }) {
+  return (
+    <>
+      <section
+        className="hero"
+        style={{
+          backgroundImage: `linear-gradient(90deg, rgba(53, 31, 27, 0.78), rgba(53, 31, 27, 0.25)), url(${asset(
+            "assorted-grid.jpg"
+          )})`,
+        }}
+      >
+        <div className="hero-content">
+          <p className="eyebrow">Fresh mini donuts in Bulacan</p>
+          <h1>BABI's Mini Donut</h1>
+          <p className="hero-copy">
+            Made-to-order mini donuts for snacks, family celebrations, parties, events, and bazaar cravings.
+          </p>
+          <div className="hero-actions">
+            <button className="button primary" type="button" onClick={() => goTo("menu")}>
+              View Menu
+            </button>
+            <button className="button secondary" type="button" onClick={() => goTo("location")}>
+              Find Store
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section className="section intro-strip">
+        <div className="intro-copy">
+          <span>Made Fresh</span>
+          <span>Customized Toppings</span>
+          <span>Events and Parties</span>
+        </div>
+      </section>
+
+      <section className="section split-section">
+        <div className="section-copy">
+          <p className="eyebrow">Signature offer</p>
+          <h2>Fresh donuts prepared for every order</h2>
+          <p>
+            The business plan centers on freshness, consistency, customer happiness, and customizable donuts based on
+            each client's preferred flavors and toppings.
+          </p>
+          <div className="mini-stat-grid">
+            <StatBlock value="4+" label="core flavors" />
+            <StatBlock value="9" label="topping choices" />
+            <StatBlock value="25 pcs" label="party box" />
+          </div>
+        </div>
+
+        <div className="feature-photo-grid">
+          {gallery.slice(0, 4).map((item) => (
+            <img key={item.file} src={asset(item.file)} alt={item.alt} loading="lazy" />
+          ))}
+        </div>
+      </section>
+
+      <section className="section menu-preview">
+        <div className="section-heading">
+          <p className="eyebrow">Menu highlights</p>
+          <h2>Boxes for small treats and party sharing</h2>
+        </div>
+        <div className="price-grid">
+          {priceCards.map((card) => (
+            <PriceCard key={card.name} card={card} />
+          ))}
+        </div>
+      </section>
+    </>
+  );
+}
+
+function StatBlock({ value, label }) {
+  return (
+    <div className="stat-block">
+      <strong>{value}</strong>
+      <span>{label}</span>
+    </div>
+  );
+}
+
+function MenuPage() {
+  return (
+    <section className="page section">
+      <PageIntro
+        eyebrow="Menu"
+        title="Mini donut flavors, toppings, and boxes"
+        copy="Choose the box size, glaze flavor, and toppings. Custom orders are handled through the Facebook page."
+      />
+
+      <div className="menu-layout">
+        <div className="menu-panel">
+          <h2>Flavors</h2>
+          <div className="chip-grid">
+            {flavors.map((flavor) => (
+              <span key={flavor} className="chip">
+                {flavor}
+              </span>
+            ))}
+          </div>
+
+          <h2>Toppings</h2>
+          <div className="chip-grid">
+            {toppings.map((topping) => (
+              <span key={topping} className="chip soft">
+                {topping}
+              </span>
+            ))}
+          </div>
+
+          <h2>Business-plan price ranges</h2>
+          <div className="range-list">
+            <span>Mossy Donuts: PHP 65 - PHP 125</span>
+            <span>Glazed Donuts: PHP 75 - PHP 285</span>
+          </div>
+        </div>
+
+        <div className="menu-panel image-panel">
+          <img
+            src={asset("menu-poster.jpg")}
+            alt="BABI's Mini Donut poster showing flavors, toppings, and prices"
+            loading="lazy"
+          />
+        </div>
+      </div>
+
+      <div className="price-grid menu-prices">
+        {priceCards.map((card) => (
+          <PriceCard key={card.name} card={card} />
+        ))}
+      </div>
+
+      <div className="menu-layout toppings-layout">
+        <div className="menu-panel image-panel">
+          <img src={asset("toppings-guide.jpg")} alt="BABI's Mini Donut toppings guide" loading="lazy" />
+        </div>
+
+        <div className="menu-panel">
+          <h2>Best for</h2>
+          <ul className="clean-list">
+            <li>Family snacks and merienda</li>
+            <li>Kids' treats and school sharing</li>
+            <li>Party dessert boxes</li>
+            <li>Event and bazaar orders</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function PriceCard({ card }) {
+  return (
+    <article className="price-card">
+      <h3>{card.name}</h3>
+      <p>{card.details}</p>
+      <strong>{card.price}</strong>
+    </article>
+  );
+}
+
+function GalleryPage() {
+  return (
+    <section className="page section">
+      <PageIntro
+        eyebrow="Gallery"
+        title="Fresh trays, toppings, and menu posters"
+        copy="All provided photos are included here so customers can see the real product style before ordering."
+      />
+      <div className="gallery-grid">
+        {gallery.map((item) => (
+          <figure key={item.file} className={item.poster ? "gallery-card poster-card" : "gallery-card"}>
+            <img src={asset(item.file)} alt={item.alt} loading="lazy" />
+            <figcaption>{item.title}</figcaption>
+          </figure>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+function AboutPage() {
+  return (
+    <section className="page section">
+      <PageIntro
+        eyebrow="About"
+        title="Business plan information"
+        copy="BABI's Mini Donut is planned as a made-to-order food business focused on fresh, customizable mini donuts for families, events, parties, online orders, and bazaars."
+      />
+
+      <div className="about-grid">
+        <section className="about-block wide">
+          <h2>Executive Summary</h2>
+          <InfoGrid items={businessFacts} />
+        </section>
+
+        <section className="about-block">
+          <h2>Vision</h2>
+          <p>
+            To see the business grow and become popular around Bulacan as a supplier of fresh donuts for snacks, family
+            events, and parties.
+          </p>
+        </section>
+
+        <section className="about-block">
+          <h2>Mission</h2>
+          <p>To serve fresh and high-quality mini donuts that bring joy to every customer.</p>
+        </section>
+
+        <section className="about-block">
+          <h2>Core Values</h2>
+          <ul className="clean-list">
+            <li>Quality first</li>
+            <li>Consistency</li>
+            <li>Customer happiness and satisfaction</li>
+          </ul>
+        </section>
+
+        <section className="about-block">
+          <h2>Unique Selling Point</h2>
+          <p>
+            Made-to-order donuts prepared for freshness, with customization depending on the client's preferred flavors
+            and toppings.
+          </p>
+        </section>
+      </div>
+    </section>
+  );
+}
+
+function InfoGrid({ items }) {
+  return (
+    <dl className="info-grid">
+      {items.map(([term, description]) => (
+        <div className="info-row" key={term}>
+          <dt>{term}</dt>
+          <dd>{description}</dd>
+        </div>
+      ))}
+    </dl>
+  );
+}
+
+function LocationPage() {
+  return (
+    <section className="page section">
+      <PageIntro
+        eyebrow="Location"
+        title="Store area in City of San Jose Del Monte, Bulacan"
+        copy="The business plan lists the store location by city. The map centers on the San Jose Del Monte service area until a full street address is available."
+      />
+
+      <div className="location-layout">
+        <div className="location-details">
+          <h2>{store.name}</h2>
+          <dl className="info-grid compact">
+            <div className="info-row">
+              <dt>Store Area</dt>
+              <dd>{store.place}</dd>
+            </div>
+            <div className="info-row">
+              <dt>Orders</dt>
+              <dd>Online orders and custom boxes</dd>
+            </div>
+            <div className="info-row">
+              <dt>Facebook</dt>
+              <dd>{store.facebook}</dd>
+            </div>
+            <div className="info-row">
+              <dt>Specialty</dt>
+              <dd>Made-to-order mini donuts for snacks, parties, and events</dd>
+            </div>
+          </dl>
+
+          <a
+            className="button primary full-button"
+            href="https://www.facebook.com/search/top?q=BABI%27s%20Mini%20Donut"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Message on Facebook
+          </a>
+        </div>
+
+        <div className="map-card">
+          <LeafletMap />
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function LeafletMap() {
+  const mapRef = useRef(null);
+  const instanceRef = useRef(null);
+
+  useEffect(() => {
+    if (!mapRef.current || instanceRef.current) return undefined;
+
+    const map = L.map(mapRef.current, {
+      scrollWheelZoom: false,
+      zoomControl: true,
+    }).setView(store.coordinates, 14);
+
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      maxZoom: 19,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    }).addTo(map);
+
+    const pin = L.divIcon({
+      className: "store-pin",
+      html: "<span>B</span>",
+      iconSize: [42, 42],
+      iconAnchor: [21, 42],
+      popupAnchor: [0, -42],
+    });
+
+    L.marker(store.coordinates, { icon: pin })
+      .addTo(map)
+      .bindPopup(`<strong>${store.name}</strong><br>${store.place}`);
+
+    instanceRef.current = map;
+    window.setTimeout(() => map.invalidateSize(), 150);
+
+    return () => {
+      map.remove();
+      instanceRef.current = null;
+    };
+  }, []);
+
+  return (
+    <div
+      ref={mapRef}
+      className="leaflet-map"
+      role="img"
+      aria-label="Map centered on City of San Jose Del Monte, Bulacan"
+    />
+  );
+}
+
+function PageIntro({ eyebrow, title, copy }) {
+  return (
+    <div className="page-intro">
+      <p className="eyebrow">{eyebrow}</p>
+      <h1>{title}</h1>
+      <p>{copy}</p>
+    </div>
+  );
+}
+
+function Footer({ goTo }) {
+  return (
+    <footer className="site-footer">
+      <div>
+        <strong>{store.name}</strong>
+        <p>Fresh, customizable mini donuts for Bulacan families, events, and parties.</p>
+      </div>
+      <div className="footer-actions">
+        <button type="button" onClick={() => goTo("menu")}>
+          Menu
+        </button>
+        <button type="button" onClick={() => goTo("about")}>
+          About
+        </button>
+        <button type="button" onClick={() => goTo("location")}>
+          Location
+        </button>
+      </div>
+    </footer>
+  );
+}
