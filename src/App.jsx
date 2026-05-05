@@ -462,15 +462,21 @@ function LocationPage() {
               <dt>Specialty</dt>
               <dd>Made-to-order mini donuts for snacks, parties, and events</dd>
             </div>
+            <div className="info-row">
+              <dt>Contact</dt>
+              <dd>
+                <a href="tel:09300345832">09300345832</a>
+              </dd>
+            </div>
           </dl>
 
           <a
             className="button primary full-button"
-            href="https://www.facebook.com/search/top?q=BABI%27s%20Mini%20Donut"
+            href="https://www.facebook.com/khlarissa.lagman.3"
             target="_blank"
             rel="noreferrer"
           >
-            Message on Facebook
+            Message us on Facebook
           </a>
         </div>
 
