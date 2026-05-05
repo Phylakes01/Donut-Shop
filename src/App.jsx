@@ -225,6 +225,8 @@ function HomePage({ goTo }) {
         </div>
       </section>
 
+      <DonutMontageSection goTo={goTo} />
+
       <section className="section split-section">
         <div className="section-copy">
           <p className="eyebrow">Signature offer</p>
@@ -259,6 +261,49 @@ function HomePage({ goTo }) {
         </div>
       </section>
     </>
+  );
+}
+
+function DonutMontageSection({ goTo }) {
+  const montageImages = gallery.slice(0, 6);
+
+  return (
+    <section className="section donut-montage-section">
+      <div className="montage-copy">
+        <p className="eyebrow">Donut montage</p>
+        <h2>A quick look at BABI's mini donut trays</h2>
+        <p>
+          Fresh glaze, bright toppings, and custom party boxes shown in a fast moving promo-style preview.
+        </p>
+        <button className="button primary" type="button" onClick={() => goTo("gallery")}>
+          View Gallery
+        </button>
+      </div>
+
+      <div className="montage-frame" aria-label="Animated donut photo montage">
+        <div className="montage-stage">
+          {montageImages.map((item, index) => (
+            <img
+              key={item.file}
+              className={`montage-slide montage-slide-${index + 1}`}
+              src={asset(item.file)}
+              alt={item.alt}
+              loading="lazy"
+            />
+          ))}
+          <div className="montage-caption">
+            <strong>Fresh</strong>
+            <span>Custom</span>
+            <span>Party-ready</span>
+          </div>
+        </div>
+        <div className="montage-strip">
+          {[...montageImages, ...montageImages].map((item, index) => (
+            <img key={`${item.file}-${index}`} src={asset(item.file)} alt="" aria-hidden="true" loading="lazy" />
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }
 
