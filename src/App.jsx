@@ -618,7 +618,7 @@ function LocationPage() {
             <div className="info-row">
               <dt>Contact</dt>
               <dd>
-                <a href="tel:09300345832">09300345832</a>
+                <a href="tel:09060676969">09060676969</a>
               </dd>
             </div>
           </dl>
