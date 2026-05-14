@@ -599,8 +599,8 @@ img {
 
 .donut-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 16px;
   padding: 18px 18px 22px;
 }
 
@@ -1008,9 +1008,6 @@ img {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  .donut-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
 
   .page-intro h1 {
     font-size: 3.2rem;
@@ -1071,9 +1068,9 @@ img {
   }
 
   .donut-grid {
-    grid-template-columns: repeat(auto-fit, minmax(66px, 1fr));
-    gap: 8px;
+    gap: 10px;
     padding: 0 12px 14px;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
   }
 
   .donut-card {
