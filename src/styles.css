@@ -1610,6 +1610,7 @@ img {
 .cookie-icon {
   font-size: 28px;
   line-height: 1;
+  flex-shrink: 0;
 }
 
 .cookie-text strong {
@@ -1617,6 +1618,7 @@ img {
   color: var(--ink);
   font-size: 1rem;
   margin-bottom: 4px;
+  word-break: break-word;
 }
 
 .cookie-text p {
