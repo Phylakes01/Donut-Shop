@@ -1,5 +1,4 @@
-import { useEffect, useRef, useState } from "react";
-import L from "leaflet";
+import { useEffect, useState } from "react";
 
 const asset = (file) => `${import.meta.env.BASE_URL}assets/photos/${file}`;
 const donutAsset = (file) => `${import.meta.env.BASE_URL}assets/donuts/${file}`;
@@ -631,58 +630,28 @@ function LocationPage() {
         </div>
 
         <div className="map-card">
-          <LeafletMap />
+          <GoogleMap />
         </div>
       </div>
     </section>
   );
 }
 
-function LeafletMap() {
-  const mapRef = useRef(null);
-  const instanceRef = useRef(null);
-
-  useEffect(() => {
-    if (!mapRef.current || instanceRef.current) return undefined;
-
-    const map = L.map(mapRef.current, {
-      scrollWheelZoom: false,
-      zoomControl: true,
-    }).setView(store.coordinates, 14);
-
-    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-      maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    }).addTo(map);
-
-    const pin = L.divIcon({
-      className: "store-pin",
-      html: "<span>B</span>",
-      iconSize: [42, 42],
-      iconAnchor: [21, 42],
-      popupAnchor: [0, -42],
-    });
-
-    L.marker(store.coordinates, { icon: pin })
-      .addTo(map)
-      .bindPopup(`<strong>${store.name}</strong><br>${store.place}`);
-
-    instanceRef.current = map;
-    window.setTimeout(() => map.invalidateSize(), 150);
-
-    return () => {
-      map.remove();
-      instanceRef.current = null;
-    };
-  }, []);
-
+function GoogleMap() {
+  const query = encodeURIComponent(store.place);
   return (
-    <div
-      ref={mapRef}
-      className="leaflet-map"
-      role="img"
-      aria-label="Map centered on City of San Jose Del Monte, Bulacan"
-    />
+    <div className="google-map-container" style={{ width: "100%", height: "100%", minHeight: "470px" }}>
+      <iframe
+        title="Google Map"
+        width="100%"
+        height="100%"
+        style={{ border: 0, minHeight: "470px" }}
+        loading="lazy"
+        allowFullScreen
+        referrerPolicy="no-referrer-when-downgrade"
+        src={`https://maps.google.com/maps?q=${query}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
+      />
+    </div>
   );
 }
 
