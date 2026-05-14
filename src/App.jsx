@@ -424,32 +424,6 @@ function MenuPage() {
       <DonutSelector />
 
       <div className="menu-layout">
-        <div className="menu-panel">
-          <h2>Flavors</h2>
-          <div className="chip-grid">
-            {flavors.map((flavor) => (
-              <span key={flavor} className="chip">
-                {flavor}
-              </span>
-            ))}
-          </div>
-
-          <h2>Toppings</h2>
-          <div className="chip-grid">
-            {toppings.map((topping) => (
-              <span key={topping} className="chip soft">
-                {topping}
-              </span>
-            ))}
-          </div>
-
-          <h2>Business-plan price ranges</h2>
-          <div className="range-list">
-            <span>Mossy Donuts: PHP 65 - PHP 125</span>
-            <span>Glazed Donuts: PHP 75 - PHP 285</span>
-          </div>
-        </div>
-
         <div className="menu-panel image-panel">
           <img
             src={asset("menu-poster.jpg")}
@@ -468,16 +442,6 @@ function MenuPage() {
       <div className="menu-layout toppings-layout">
         <div className="menu-panel image-panel">
           <img src={asset("toppings-guide.jpg")} alt="BABI's Mini Donut toppings guide" loading="lazy" />
-        </div>
-
-        <div className="menu-panel">
-          <h2>Best for</h2>
-          <ul className="clean-list">
-            <li>Family snacks and merienda</li>
-            <li>Kids' treats and school sharing</li>
-            <li>Party dessert boxes</li>
-            <li>Event and bazaar orders</li>
-          </ul>
         </div>
       </div>
     </section>
