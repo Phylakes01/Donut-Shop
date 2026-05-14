@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import ChatBot from "./ChatBot";
 
 const asset = (file) => `${import.meta.env.BASE_URL}assets/photos/${file}`;
 const donutAsset = (file) => `${import.meta.env.BASE_URL}assets/donuts/${file}`;
@@ -355,6 +356,7 @@ function HomePage({ goTo }) {
           ))}
         </div>
       </section>
+      <ChatBot />
     </>
   );
 }
