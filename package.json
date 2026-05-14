@@ -2,7 +2,7 @@
   "name": "babis-mini-donut-promo",
   "version": "1.0.0",
   "private": true,
-  "description": "React.js promotional website for BABI's Mini Donut using Leaflet and Vite.",
+  "description": "React.js promotional website for BABI's Mini Donut using Google Maps, Gemini AI, and Vite.",
   "type": "module",
   "scripts": {
     "dev": "vite",
