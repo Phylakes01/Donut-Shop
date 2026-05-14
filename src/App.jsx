@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import L from "leaflet";
 
 const asset = (file) => `${import.meta.env.BASE_URL}assets/photos/${file}`;
+const donutAsset = (file) => `${import.meta.env.BASE_URL}assets/donuts/${file}`;
+const facebookUrl = "https://www.facebook.com/khlarissa.lagman.3";
 
 const store = {
   name: "BABI's Mini Donut",
@@ -95,6 +97,89 @@ const priceCards = [
   },
 ];
 
+const donutOptions = [
+  {
+    name: "Matcha White Sprinkles",
+    image: "01_matcha_white_sprinkles.png",
+    description: "Earthy matcha glaze finished with light white sprinkles.",
+  },
+  {
+    name: "Crumb Coated",
+    image: "02_crumb_coated_plain.png",
+    description: "Creamy mini donut coated with crushed graham crumbs.",
+  },
+  {
+    name: "Pink Chocolate Drizzle",
+    image: "03_pink_chocolate_drizzle.png",
+    description: "Bright strawberry glaze with a rich chocolate drizzle.",
+  },
+  {
+    name: "Chocolate White Toppings",
+    image: "04_chocolate_white_oval_toppings.png",
+    description: "Chocolate glaze topped with crunchy white crispies.",
+  },
+  {
+    name: "Matcha Chocolate Drizzle",
+    image: "05_matcha_chocolate_drizzle.png",
+    description: "Matcha glaze with a bold chocolate ribbon finish.",
+  },
+  {
+    name: "White Multicolor Sprinkles",
+    image: "06_white_multicolor_sprinkles.png",
+    description: "White chocolate glaze with berry-colored sprinkles.",
+  },
+  {
+    name: "Plain Pink Glazed",
+    image: "07_plain_pink_glazed.png",
+    description: "Smooth strawberry glaze for a simple pink favorite.",
+  },
+  {
+    name: "Chocolate Pink Drizzle",
+    image: "08_chocolate_pink_drizzle.png",
+    description: "Chocolate base with playful strawberry-pink drizzle.",
+  },
+  {
+    name: "Matcha Almond Slices",
+    image: "09_matcha_almond_slices.png",
+    description: "Matcha glaze topped with sliced almonds.",
+  },
+  {
+    name: "White Pastel Mallows",
+    image: "10_white_pastel_marshmallows.png",
+    description: "White chocolate glaze topped with soft mini mallows.",
+  },
+  {
+    name: "Matcha White Toppings",
+    image: "11_matcha_white_oval_toppings.png",
+    description: "Matcha glaze with creamy white oval toppings.",
+  },
+  {
+    name: "Pink Half Chocolate",
+    image: "12_pink_half_chocolate_sprinkles.png",
+    description: "Pink glaze finished with chocolate sprinkles on one side.",
+  },
+  {
+    name: "Pink Multicolor Sprinkles",
+    image: "13_pink_multicolor_sprinkles.png",
+    description: "Pink glaze covered with a bright sprinkle mix.",
+  },
+  {
+    name: "Chocolate Pastel Mallows",
+    image: "14_chocolate_pastel_marshmallows.png",
+    description: "Chocolate glaze topped with colorful mini mallows.",
+  },
+  {
+    name: "Chocolate White Sprinkles",
+    image: "15_chocolate_white_sprinkles.png",
+    description: "Classic chocolate glaze with white sprinkles.",
+  },
+  {
+    name: "Chocolate Cookie Crumb",
+    image: "16_chocolate_cookie_crumb.png",
+    description: "Creamy glaze covered with crushed cookie crumbs.",
+  },
+];
+
 const businessFacts = [
   ["Business Name", "BABI's Mini Donut"],
   ["Location", "City of San Jose Del Monte, Bulacan"],
@@ -106,9 +191,16 @@ const businessFacts = [
   ["Sales Approach", "Online orders and bazaar selling"],
 ];
 
-function pageFromHash() {
-  const page = window.location.hash.replace("#", "");
+function pageFromLocation() {
+  const hashPage = window.location.hash.replace("#", "");
+  if (navItems.some(([id]) => id === hashPage)) return hashPage;
+
+  const page = window.location.pathname.split("/").filter(Boolean).pop() || "home";
   return navItems.some(([id]) => id === page) ? page : "home";
+}
+
+function pathForPage(page) {
+  return page === "home" ? "/" : `/${page}`;
 }
 
 function pageLabel(page) {
@@ -116,13 +208,20 @@ function pageLabel(page) {
 }
 
 export default function App() {
-  const [activePage, setActivePage] = useState(pageFromHash);
+  const [activePage, setActivePage] = useState(pageFromLocation);
   const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
-    const onHashChange = () => setActivePage(pageFromHash());
-    window.addEventListener("hashchange", onHashChange);
-    return () => window.removeEventListener("hashchange", onHashChange);
+    const hashPage = window.location.hash.replace("#", "");
+
+    if (navItems.some(([id]) => id === hashPage)) {
+      window.history.replaceState({ page: hashPage }, "", pathForPage(hashPage));
+      setActivePage(hashPage);
+    }
+
+    const onPopState = () => setActivePage(pageFromLocation());
+    window.addEventListener("popstate", onPopState);
+    return () => window.removeEventListener("popstate", onPopState);
   }, []);
 
   useEffect(() => {
@@ -132,12 +231,9 @@ export default function App() {
   }, [activePage]);
 
   const goTo = (page) => {
-    if (window.location.hash === `#${page}`) {
-      setActivePage(page);
-      setMenuOpen(false);
-      return;
-    }
-    window.location.hash = page;
+    setActivePage(page);
+    setMenuOpen(false);
+    window.history.pushState({ page }, "", pathForPage(page));
   };
 
   return (
@@ -325,6 +421,8 @@ function MenuPage() {
         copy="Choose the box size, glaze flavor, and toppings. Custom orders are handled through the Facebook page."
       />
 
+      <DonutSelector />
+
       <div className="menu-layout">
         <div className="menu-panel">
           <h2>Flavors</h2>
@@ -381,6 +479,49 @@ function MenuPage() {
             <li>Event and bazaar orders</li>
           </ul>
         </div>
+      </div>
+    </section>
+  );
+}
+
+function DonutSelector() {
+  return (
+    <section className="donut-selector" aria-labelledby="donut-selector-title">
+      <div className="donut-selector-bar">
+        <div>
+          <p className="eyebrow">Donut selection</p>
+          <h2 id="donut-selector-title">Pick a mini donut style</h2>
+        </div>
+      </div>
+
+      <div className="donut-tabs" aria-label="Donut categories">
+        <span>Ring Donuts &gt;</span>
+        <span>Glazed Donuts &gt;</span>
+        <span>Party Box &gt;</span>
+      </div>
+
+      <div className="donut-grid">
+        <a
+          className="donut-custom-card"
+          href={facebookUrl}
+          target="_blank"
+          rel="noreferrer"
+          aria-label="Customize order on Facebook"
+        >
+          <span className="custom-donut-ring">
+            <span>+</span>
+          </span>
+          <strong>Customize Order</strong>
+          <small>Build your own flavor and toppings</small>
+        </a>
+
+        {donutOptions.map((donut) => (
+          <article className="donut-card" key={donut.name}>
+            <img src={donutAsset(donut.image)} alt={donut.name} loading="lazy" />
+            <h3>{donut.name}</h3>
+            <p>{donut.description}</p>
+          </article>
+        ))}
       </div>
     </section>
   );
@@ -517,7 +658,7 @@ function LocationPage() {
 
           <a
             className="button primary full-button"
-            href="https://www.facebook.com/khlarissa.lagman.3"
+            href={facebookUrl}
             target="_blank"
             rel="noreferrer"
           >

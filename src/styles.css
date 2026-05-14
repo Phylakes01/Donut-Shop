@@ -3,6 +3,8 @@
   --pink: #e85c87;
   --pink-dark: #bc3f68;
   --pink-soft: #ffe5ed;
+  --orange: #ff8617;
+  --orange-soft: #fff0df;
   --matcha: #6f8a35;
   --matcha-soft: #edf3dc;
   --chocolate: #43261f;
@@ -551,6 +553,195 @@ img {
   align-items: stretch;
 }
 
+.donut-selector {
+  margin-bottom: 28px;
+  overflow: hidden;
+  border: 8px solid var(--orange);
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.donut-selector-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 18px 20px;
+  background: var(--orange);
+  color: #fff;
+}
+
+.donut-selector-bar .eyebrow {
+  margin-bottom: 6px;
+  color: #fff9f1;
+}
+
+.donut-selector-bar h2 {
+  margin: 0;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 2rem;
+  line-height: 1.1;
+  letter-spacing: 0;
+}
+
+.donut-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 12px 16px 0;
+}
+
+.donut-tabs span {
+  color: var(--chocolate);
+  font-size: 0.9rem;
+  font-weight: 950;
+}
+
+.donut-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  padding: 18px 18px 22px;
+}
+
+.donut-custom-card {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  min-height: 238px;
+  padding: 20px 12px;
+  overflow: hidden;
+  border: 2px dashed #ffb464;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #fff8ef, #fff);
+  color: var(--chocolate);
+  text-align: center;
+  text-decoration: none;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.donut-custom-card:hover,
+.donut-custom-card:focus {
+  transform: translateY(-4px);
+  border-color: var(--orange);
+  box-shadow: 0 18px 36px rgba(255, 134, 23, 0.18);
+}
+
+.custom-donut-ring {
+  display: grid;
+  place-items: center;
+  width: 142px;
+  height: 142px;
+  border-radius: 50%;
+  background:
+    radial-gradient(circle at center, transparent 0 32px, #f9eef2 33px 48px, transparent 49px),
+    conic-gradient(from 10deg, #e85c87, #fff1f4, #7e3e25, #f7c36f, #e85c87);
+  filter: drop-shadow(0 10px 14px rgba(67, 38, 31, 0.16));
+  transition: transform 180ms ease;
+}
+
+.donut-custom-card:hover .custom-donut-ring,
+.donut-custom-card:focus .custom-donut-ring {
+  transform: scale(1.05) rotate(-6deg);
+}
+
+.custom-donut-ring span {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--pink);
+  color: #fff;
+  font-size: 2rem;
+  font-weight: 950;
+  line-height: 1;
+  box-shadow: 0 10px 18px rgba(232, 92, 135, 0.25);
+}
+
+.donut-custom-card strong {
+  margin-top: 12px;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.donut-custom-card small {
+  margin-top: 5px;
+  max-width: 150px;
+  color: var(--muted);
+  font-weight: 750;
+  line-height: 1.35;
+}
+
+.donut-card {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  min-height: 238px;
+  padding: 22px 12px 20px;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: #fff;
+  text-align: center;
+  transition: transform 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+
+.donut-card:hover,
+.donut-card:focus-within {
+  transform: translateY(-4px);
+  border-color: #ffd0a1;
+  box-shadow: 0 18px 36px rgba(255, 134, 23, 0.18);
+}
+
+.donut-card img {
+  width: min(148px, 82%);
+  aspect-ratio: 1;
+  object-fit: contain;
+  filter: drop-shadow(0 10px 14px rgba(67, 38, 31, 0.16));
+  transition: transform 180ms ease;
+}
+
+.donut-card:hover img,
+.donut-card:focus-within img {
+  transform: scale(1.05) rotate(-3deg);
+}
+
+.donut-card h3 {
+  margin: 12px 0 0;
+  color: var(--chocolate);
+  font-size: 0.98rem;
+  line-height: 1.2;
+}
+
+.donut-card p {
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+  left: 12px;
+  z-index: 2;
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 248, 242, 0.96);
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 750;
+  line-height: 1.35;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.donut-card:hover p,
+.donut-card:focus-within p {
+  opacity: 1;
+  transform: translateY(0);
+}
+
 .menu-panel {
   padding: 26px;
 }
@@ -817,6 +1008,10 @@ img {
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .donut-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
   .page-intro h1 {
     font-size: 3.2rem;
   }
@@ -863,6 +1058,32 @@ img {
   .gallery-grid,
   .about-grid {
     grid-template-columns: 1fr;
+  }
+
+  .donut-selector {
+    border-width: 6px;
+  }
+
+  .donut-selector-bar {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 16px;
+  }
+
+  .donut-grid {
+    grid-template-columns: repeat(auto-fit, minmax(66px, 1fr));
+    gap: 8px;
+    padding: 0 12px 14px;
+  }
+
+  .donut-card {
+    min-height: 0;
+  }
+
+  .donut-thumb,
+  .custom-donut-ring {
+    width: 64px;
+    height: 64px;
   }
 
   .feature-photo-grid {
