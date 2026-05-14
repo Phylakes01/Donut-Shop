@@ -1149,7 +1149,7 @@ img {
 }
 
 .chatbot-trigger {
-  background: var(--pink);
+  background: #3b82f6;
   color: white;
   border: none;
   border-radius: 50%;
@@ -1186,7 +1186,7 @@ img {
   flex-direction: column;
   overflow: hidden;
   animation: slideUp 0.3s ease;
-  border: 1px solid var(--pink-soft);
+  border: 1px solid #dbeafe;
 }
 
 @keyframes slideUp {
@@ -1195,7 +1195,7 @@ img {
 }
 
 .chatbot-header {
-  background: var(--pink);
+  background: #3b82f6;
   color: white;
   padding: 15px;
   display: flex;
@@ -1225,14 +1225,18 @@ img {
 
 .chat-message {
   max-width: 85%;
-  padding: 10px 14px;
+  padding: 12px 16px;
   border-radius: 12px;
-  font-size: 0.9rem;
-  line-height: 1.4;
+  font-size: 0.95rem;
+  line-height: 1.5;
   word-wrap: break-word;
 }
 
 .chat-message p {
+  margin: 0 0 8px 0;
+}
+
+.chat-message p:last-child {
   margin: 0;
 }
 
@@ -1242,11 +1246,11 @@ img {
   align-self: flex-start;
   border-bottom-left-radius: 4px;
   box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-  border: 1px solid var(--pink-soft);
+  border: 1px solid #dbeafe;
 }
 
 .chat-message.user {
-  background: var(--pink);
+  background: #3b82f6;
   color: white;
   align-self: flex-end;
   border-bottom-right-radius: 4px;
@@ -1270,11 +1274,11 @@ img {
 }
 
 .chatbot-input input:focus {
-  border-color: var(--pink);
+  border-color: #3b82f6;
 }
 
 .chatbot-input button {
-  background: var(--pink);
+  background: #3b82f6;
   color: white;
   border: none;
   padding: 10px 15px;
@@ -1286,7 +1290,7 @@ img {
 }
 
 .chatbot-input button:hover:not(:disabled) {
-  background: var(--pink-dark);
+  background: #2563eb;
 }
 
 .chatbot-input button:disabled {
@@ -1303,7 +1307,7 @@ img {
 .chat-message.loading .dot {
   width: 6px;
   height: 6px;
-  background: var(--pink);
+  background: #3b82f6;
   border-radius: 50%;
   animation: bounce 1.4s infinite ease-in-out both;
 }
