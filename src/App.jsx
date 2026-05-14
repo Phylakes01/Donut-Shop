@@ -638,7 +638,7 @@ function LocationPage() {
 }
 
 function GoogleMap() {
-  const query = encodeURIComponent(store.place);
+  const query = encodeURIComponent(`${store.coordinates[0]},${store.coordinates[1]} (${store.name})`);
   return (
     <div className="google-map-container" style={{ width: "100%", height: "100%", minHeight: "470px" }}>
       <iframe
