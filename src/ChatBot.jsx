@@ -9,12 +9,18 @@ Use emojis occasionally. Keep responses relatively short and sweet.`;
 
 export default function ChatBot() {
   const [isOpen, setIsOpen] = useState(false);
-  const [messages, setMessages] = useState([
-    {
-      role: "model",
-      parts: [{ text: "Hi! I'm the BABI's Mini Donut assistant! 🍩 How can I help you today?" }]
-    }
-  ]);
+  const [messages, setMessages] = useState(() => {
+    try {
+      const saved = localStorage.getItem("chatHistory");
+      if (saved) return JSON.parse(saved);
+    } catch(e) {}
+    return [
+      {
+        role: "model",
+        parts: [{ text: "Hi! I'm the BABI's Mini Donut assistant! 🍩 How can I help you today?" }]
+      }
+    ];
+  });
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
@@ -26,6 +32,12 @@ export default function ChatBot() {
   useEffect(() => {
     scrollToBottom();
   }, [messages, isOpen]);
+
+  useEffect(() => {
+    if (localStorage.getItem("cookieConsent") === "accepted") {
+      localStorage.setItem("chatHistory", JSON.stringify(messages));
+    }
+  }, [messages]);
 
   const toggleChat = () => setIsOpen(!isOpen);
 

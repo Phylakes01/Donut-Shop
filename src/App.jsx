@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import ChatBot from "./ChatBot";
+import CookieConsent from "./CookieConsent";
 
 const asset = (file) => `${import.meta.env.BASE_URL}assets/photos/${file}`;
 const donutAsset = (file) => `${import.meta.env.BASE_URL}assets/donuts/${file}`;
@@ -247,6 +248,7 @@ export default function App() {
         {activePage === "location" && <LocationPage />}
       </main>
       <Footer goTo={goTo} />
+      <CookieConsent />
     </div>
   );
 }
