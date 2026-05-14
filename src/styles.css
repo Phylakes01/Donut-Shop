@@ -1493,10 +1493,63 @@ img {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-right: 8px;
+  border-radius: 20px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
 .chatbot-input .clear-button:hover {
   background: #dc2626; /* red on hover for trash */
+}
+
+/* Custom Confirm Modal */
+.chatbot-messages {
+  position: relative; /* for absolute overlay */
+}
+
+.chat-confirm-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  animation: fadeIn 0.2s ease;
+}
+
+.chat-confirm-box {
+  background: white;
+  border: 1px solid var(--line);
+  padding: 20px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  width: 80%;
+}
+
+.chat-confirm-box p {
+  margin: 0 0 15px 0;
+  font-weight: bold;
+  color: var(--ink);
+}
+
+.chat-confirm-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.chat-confirm-actions button {
+  padding: 8px 16px;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
 .chat-message.loading {

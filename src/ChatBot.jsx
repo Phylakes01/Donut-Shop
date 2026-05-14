@@ -23,6 +23,7 @@ export default function ChatBot() {
   });
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
@@ -41,16 +42,23 @@ export default function ChatBot() {
 
   const toggleChat = () => setIsOpen(!isOpen);
 
-  const clearHistory = () => {
-    if (window.confirm("Are you sure you want to delete your chat history?")) {
-      localStorage.removeItem("chatHistory");
-      setMessages([
-        {
-          role: "model",
-          parts: [{ text: "Hi! I'm the BABI's Mini Donut assistant! 🍩 How can I help you today?" }]
-        }
-      ]);
-    }
+  const requestClear = () => {
+    setShowConfirm(true);
+  };
+
+  const confirmClear = () => {
+    localStorage.removeItem("chatHistory");
+    setMessages([
+      {
+        role: "model",
+        parts: [{ text: "Hi! I'm the BABI's Mini Donut assistant! 🍩 How can I help you today?" }]
+      }
+    ]);
+    setShowConfirm(false);
+  };
+
+  const cancelClear = () => {
+    setShowConfirm(false);
   };
 
   const handleSend = async (e) => {
@@ -114,6 +122,17 @@ export default function ChatBot() {
           </div>
           
           <div className="chatbot-messages">
+            {showConfirm && (
+              <div className="chat-confirm-overlay">
+                <div className="chat-confirm-box">
+                  <p>Delete chat history?</p>
+                  <div className="chat-confirm-actions">
+                    <button type="button" onClick={cancelClear} className="button secondary">Cancel</button>
+                    <button type="button" onClick={confirmClear} className="button primary" style={{background: '#dc2626'}}>Delete</button>
+                  </div>
+                </div>
+              </div>
+            )}
             {messages.map((msg, index) => (
               <div key={index} className={`chat-message ${msg.role === "user" ? "user" : "model"}`}>
                 <p>{msg.parts[0].text}</p>
@@ -130,26 +149,26 @@ export default function ChatBot() {
           </div>
 
           <form className="chatbot-input" onSubmit={handleSend}>
-            <input
-              type="text"
-              placeholder="Ask about our donuts..."
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              disabled={isLoading}
-            />
-            <button type="submit" disabled={isLoading || !input.trim()}>
-              Send
-            </button>
             <button 
               type="button" 
               className="clear-button" 
-              onClick={clearHistory} 
+              onClick={requestClear} 
               title="Clear chat history"
               aria-label="Clear chat history"
             >
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
                 <path d="M17 6H22V8H20V21C20 21.5523 19.5523 22 19 22H5C4.44772 22 4 21.5523 4 21V8H2V6H7V3C7 2.44772 7.44772 2 8 2H16C16.5523 2 17 2.44772 17 3V6ZM18 8H6V20H18V8ZM9 11H11V17H9V11ZM13 11H15V17H13V11ZM9 4V6H15V4H9Z"></path>
               </svg>
+            </button>
+            <input
+              type="text"
+              placeholder="Ask about our donuts..."
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              disabled={isLoading || showConfirm}
+            />
+            <button type="submit" disabled={isLoading || !input.trim() || showConfirm}>
+              Send
             </button>
           </form>
         </div>
