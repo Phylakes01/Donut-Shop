@@ -7,7 +7,7 @@ const facebookUrl = "https://www.facebook.com/khlarissa.lagman.3";
 const store = {
   name: "BABI's Mini Donut",
   place: "City of San Jose Del Monte, Bulacan",
-  coordinates: [14.8139, 121.0453],
+  coordinates: [14.817348, 121.025504],
   facebook: "BABI's Mini Donut",
 };
 
