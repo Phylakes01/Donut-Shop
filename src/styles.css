@@ -1486,6 +1486,19 @@ img {
   cursor: not-allowed;
 }
 
+.chatbot-input .clear-button {
+  background: var(--muted);
+  color: white;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.chatbot-input .clear-button:hover {
+  background: #dc2626; /* red on hover for trash */
+}
+
 .chat-message.loading {
   display: flex;
   gap: 4px;
