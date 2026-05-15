@@ -1499,19 +1499,21 @@ img {
   }
   .chatbot-window {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: auto;
+    bottom: 16px;
+    left: 16px;
+    right: 16px;
     width: auto;
-    height: auto;
-    border-radius: 0;
-    border: none;
+    height: 70vh;
+    max-height: 480px;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
     z-index: 10000;
   }
   .chatbot-header {
-    border-radius: 0;
-    padding: 16px;
+    border-radius: 16px 16px 0 0;
+    padding: 15px;
   }
   .chatbot-input {
     padding: 8px;
