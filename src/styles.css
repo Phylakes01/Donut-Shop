@@ -1273,6 +1273,7 @@ img {
   outline: none;
   font-size: 0.9rem;
   transition: border-color 0.2s;
+  min-width: 0;
 }
 
 .chatbot-input input:focus {
